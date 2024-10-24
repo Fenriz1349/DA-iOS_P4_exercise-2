@@ -13,7 +13,7 @@ struct FirstLastNameAndDobText: View {
         VStack(alignment: .leading) {
             Text("\(user.name.first) \(user.name.last)")
                 .font(.headline)
-            Text("\(user.dob.date)")
+            Text("\(user.dob.getFrenchDate())")
                 .font(.subheadline)
         }
     }

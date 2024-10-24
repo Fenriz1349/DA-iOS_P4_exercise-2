@@ -17,6 +17,22 @@ struct User: Identifiable {
     struct Dob: Codable {
         let date: String
         let age: Int
+        
+        func getFrenchDate() -> String {
+            let inputFormatter = DateFormatter()
+            inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+            inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            
+            if let datefr = inputFormatter.date(from: date) {
+                let outputFormatter = DateFormatter()
+                outputFormatter.locale = Locale(identifier: "fr_FR")
+                outputFormatter.dateFormat = "d MMMM yyyy"
+                
+                return outputFormatter.string(from: datefr)
+            } else {
+                return date
+            }
+        }
     }
 
     // MARK: - Name
