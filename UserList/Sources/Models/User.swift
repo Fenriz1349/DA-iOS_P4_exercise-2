@@ -13,7 +13,7 @@ struct User: Identifiable {
         self.picture = .init(large: user.picture.large, medium: user.picture.medium, thumbnail: user.picture.thumbnail)
     }
 
-    // MARK: - Dob
+    // MARK: - Date of birth
     struct Dob: Codable {
         let date: String
         let age: Int

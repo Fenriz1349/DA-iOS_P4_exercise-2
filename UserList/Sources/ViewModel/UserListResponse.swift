@@ -9,7 +9,7 @@ struct UserListResponse: Codable {
         let dob: Dob
         let picture: Picture
 
-        // MARK: - Dob
+        // MARK: - Date of birth
         struct Dob: Codable {
             let date: String
             let age: Int
