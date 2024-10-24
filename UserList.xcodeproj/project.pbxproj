@@ -18,6 +18,9 @@
 		2FFB64282AC6D255007F2F80 /* UserListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB64272AC6D255007F2F80 /* UserListApp.swift */; };
 		2FFB642A2AC6D255007F2F80 /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB64292AC6D255007F2F80 /* UserListView.swift */; };
 		2FFB642C2AC6D256007F2F80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FFB642B2AC6D256007F2F80 /* Assets.xcassets */; };
+		685801E22CCA3F1A00B3190C /* UserListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685801E12CCA3F1A00B3190C /* UserListViewModel.swift */; };
+		685801E42CCA631600B3190C /* UserRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685801E32CCA631600B3190C /* UserRow.swift */; };
+		685801E62CCA638600B3190C /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685801E52CCA638600B3190C /* UserCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +48,9 @@
 		2FFB64292AC6D255007F2F80 /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
 		2FFB642B2AC6D256007F2F80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FFB64342AC6D256007F2F80 /* UserListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UserListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		685801E12CCA3F1A00B3190C /* UserListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewModel.swift; sourceTree = "<group>"; };
+		685801E32CCA631600B3190C /* UserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRow.swift; sourceTree = "<group>"; };
+		685801E52CCA638600B3190C /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,12 +74,11 @@
 		2FF9D9172ACB3C0B00F3A6C5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				685801E02CCA3E9C00B3190C /* ViewModel */,
+				685801DF2CCA3E9000B3190C /* ExtractedViews */,
+				685801DE2CCA3E7F00B3190C /* Views */,
+				685801DD2CCA3E6F00B3190C /* Models */,
 				2FFB64272AC6D255007F2F80 /* UserListApp.swift */,
-				2FFB64292AC6D255007F2F80 /* UserListView.swift */,
-				2F804AE12ACC976300A46A03 /* UserDetailView.swift */,
-				2FEF0C702ACB45E3004DB87C /* User.swift */,
-				2FEF0C6E2ACB416C004DB87C /* UserListResponse.swift */,
-				2FF9D91E2ACB3DD400F3A6C5 /* UserListRepository.swift */,
 				2FF9D9192ACB3CD800F3A6C5 /* HTTPClient */,
 			);
 			path = Sources;
@@ -131,6 +136,42 @@
 				2FB4823B2ACC98DD0016CBA7 /* UserList.xctestplan */,
 			);
 			path = UserListTests;
+			sourceTree = "<group>";
+		};
+		685801DD2CCA3E6F00B3190C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2FEF0C702ACB45E3004DB87C /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		685801DE2CCA3E7F00B3190C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2FFB64292AC6D255007F2F80 /* UserListView.swift */,
+				2F804AE12ACC976300A46A03 /* UserDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		685801DF2CCA3E9000B3190C /* ExtractedViews */ = {
+			isa = PBXGroup;
+			children = (
+				685801E32CCA631600B3190C /* UserRow.swift */,
+				685801E52CCA638600B3190C /* UserCell.swift */,
+			);
+			path = ExtractedViews;
+			sourceTree = "<group>";
+		};
+		685801E02CCA3E9C00B3190C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2FF9D91E2ACB3DD400F3A6C5 /* UserListRepository.swift */,
+				685801E12CCA3F1A00B3190C /* UserListViewModel.swift */,
+				2FEF0C6E2ACB416C004DB87C /* UserListResponse.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,10 +277,13 @@
 				2FF9D91D2ACB3D8800F3A6C5 /* HTTPMethod.swift in Sources */,
 				2FF9D91B2ACB3CE600F3A6C5 /* URLRequest.swift in Sources */,
 				2FFB642A2AC6D255007F2F80 /* UserListView.swift in Sources */,
+				685801E42CCA631600B3190C /* UserRow.swift in Sources */,
 				2FEF0C6F2ACB416C004DB87C /* UserListResponse.swift in Sources */,
+				685801E22CCA3F1A00B3190C /* UserListViewModel.swift in Sources */,
 				2F804AE22ACC976300A46A03 /* UserDetailView.swift in Sources */,
 				2FF9D91F2ACB3DD400F3A6C5 /* UserListRepository.swift in Sources */,
 				2FFB64282AC6D255007F2F80 /* UserListApp.swift in Sources */,
+				685801E62CCA638600B3190C /* UserCell.swift in Sources */,
 				2FEF0C712ACB45E3004DB87C /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
