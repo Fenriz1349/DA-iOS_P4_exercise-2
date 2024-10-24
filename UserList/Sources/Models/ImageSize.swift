@@ -7,8 +7,8 @@
 
 import Foundation
 
-// Enum pour formater les images
-enum ImageSize : CGFloat{
+// Enum pour formater les images dans AsyncUserImage
+enum ImageSize : CGFloat {
     case thumbnail = 50
     case medium = 150
     case large = 200

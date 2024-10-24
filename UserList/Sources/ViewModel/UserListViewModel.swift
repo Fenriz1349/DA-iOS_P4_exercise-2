@@ -12,11 +12,7 @@ final class UserListViewModel: ObservableObject {
     private let repository : UserListRepository
     
     // var published pour pouvoir mettre la view à jour
-    @Published var users : [User] = []{
-        didSet {
-            fetchUsers()
-        }
-    }
+    @Published var users : [User] = []
     @Published var isLoading = false
     @Published var isGridView = false
     
@@ -31,14 +27,18 @@ final class UserListViewModel: ObservableObject {
         Task {
             do {
                 let users = try await repository.fetchUsers(quantity: 20)
-                self.users.append(contentsOf: users)
-                isLoading = false
+                // Le DispatchQueue force les modification des published var sur le main thread
+                DispatchQueue.main.async {
+                                self.users.append(contentsOf: users)
+                                self.isLoading = false
+                            }
             } catch {
                 print("Error fetching users: \(error.localizedDescription)")
             }
         }
     }
     
+    // fonction pour regarder si on peut continuer à charger des nouveaux utilisateurs
     func shouldLoadMoreData(currentItem item: User) -> Bool {
         guard let lastItem = users.last else { return false }
         return !isLoading && item.id == lastItem.id
