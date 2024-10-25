@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FirstLastNameAndDobText: View {
+struct NameAndDobRowText: View {
     let user : User
     var body: some View {
         VStack(alignment: .leading) {

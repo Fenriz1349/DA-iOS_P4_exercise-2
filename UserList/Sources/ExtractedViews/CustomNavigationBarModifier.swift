@@ -14,7 +14,18 @@ struct CustomNavigationBarModifier: ViewModifier {
         content
             .navigationTitle("Utilisateurs")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
+                    Picker(selection: $viewModel.isFrench, label: Text("Display")) {
+                        Image(systemName: "rectangle.grid.1x2.fill")
+                            .tag(true)
+                            .accessibilityLabel(Text("Grid view"))
+                        Image(systemName: "list.bullet")
+                            .tag(false)
+                            .accessibilityLabel(Text("List view"))
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     Picker(selection: $viewModel.isGridView, label: Text("Display")) {
                         Image(systemName: "rectangle.grid.1x2.fill")
                             .tag(true)
@@ -25,7 +36,7 @@ struct CustomNavigationBarModifier: ViewModifier {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         viewModel.reloadUsers()
                     }) {
