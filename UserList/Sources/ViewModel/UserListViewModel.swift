@@ -15,6 +15,7 @@ final class UserListViewModel: ObservableObject {
     @Published var users : [User] = []
     @Published var isLoading = false
     @Published var isGridView = false
+    @Published var isFrench = false
     
     // on ne peut init que le repository car les URLRequest sont async et donc non géré dans une init
     init(repository: UserListRepository) {

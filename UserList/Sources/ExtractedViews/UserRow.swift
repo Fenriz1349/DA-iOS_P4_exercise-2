@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct UserRow: View {
+    @ObservedObject var viewModel : UserListViewModel
+    
     let user : User
+    
     var body: some View {
-        NavigationLink(destination: UserDetailView(user: user)) {
+        NavigationLink(destination: UserDetailView(viewModel: viewModel, user: user)) {
             HStack {
                 AsyncUserImage(user: user, size: .thumbnail)
-                FirstLastNameAndDobText(user: user)
+                NameAndDobRowText(viewModel: viewModel ,user: user)
             }
         }
     }

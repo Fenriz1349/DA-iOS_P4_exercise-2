@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct NameAndDobRowText: View {
+    @ObservedObject var viewModel : UserListViewModel
+    
     let user : User
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("\(user.name.first) \(user.name.last)")
                 .font(.headline)
-            Text("\(user.dob.getFrenchDate())")
+            Text("\(viewModel.dateOfBirthString(for: user))")
                 .font(.subheadline)
         }
     }
 }
-

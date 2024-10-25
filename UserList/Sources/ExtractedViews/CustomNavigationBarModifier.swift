@@ -12,16 +12,18 @@ struct CustomNavigationBarModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .navigationTitle("Utilisateurs")
+            .navigationTitle(viewModel.navigationTitle)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Picker(selection: $viewModel.isFrench, label: Text("Display")) {
-                        Image(systemName: "rectangle.grid.1x2.fill")
+                        Text("🇫🇷")
                             .tag(true)
-                            .accessibilityLabel(Text("Grid view"))
-                        Image(systemName: "list.bullet")
+                            .accessibilityLabel(Text("French"))
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                        Text("🇺🇸")
                             .tag(false)
                             .accessibilityLabel(Text("List view"))
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
@@ -29,7 +31,7 @@ struct CustomNavigationBarModifier: ViewModifier {
                     Picker(selection: $viewModel.isGridView, label: Text("Display")) {
                         Image(systemName: "rectangle.grid.1x2.fill")
                             .tag(true)
-                            .accessibilityLabel(Text("Grid view"))
+                            .accessibilityLabel(Text("English"))
                         Image(systemName: "list.bullet")
                             .tag(false)
                             .accessibilityLabel(Text("List view"))

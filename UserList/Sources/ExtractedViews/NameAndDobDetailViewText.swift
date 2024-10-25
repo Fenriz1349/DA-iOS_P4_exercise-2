@@ -7,12 +7,21 @@
 
 import SwiftUI
 
-struct NameAndDobDetailViewText: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+import SwiftUI
 
-#Preview {
-    NameAndDobDetailViewText()
+struct NameAndDobDetailViewText: View {
+    @ObservedObject var viewModel : UserListViewModel
+    
+    let user : User
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("\(viewModel.getCivility(for: user)) \(user.name.first) \(user.name.last)")
+                .font(.headline)
+            Text(viewModel.bornOnString(for: user))
+                .font(.subheadline)
+            Text("\(viewModel.dateOfBirthString(for: user))")
+                .font(.subheadline)
+        }
+    }
 }

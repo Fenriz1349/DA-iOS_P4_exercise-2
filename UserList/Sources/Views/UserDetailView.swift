@@ -1,12 +1,14 @@
 import SwiftUI
 
 struct UserDetailView: View {
+    @ObservedObject var viewModel : UserListViewModel
+    
     let user: User
     
     var body: some View {
         VStack {
             AsyncUserImage(user: user, size:.large)
-           FirstLastNameAndDobText(user: user)
+            NameAndDobDetailViewText(viewModel: viewModel, user: user)
             .padding()
             
             Spacer()

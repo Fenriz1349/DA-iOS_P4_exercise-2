@@ -8,7 +8,7 @@ struct UserListView: View {
         NavigationView {
             if !viewModel.isGridView {
                 List(viewModel.users) { user in
-                    UserRow(user: user)
+                    UserRow(viewModel: viewModel, user: user)
                     .onAppear {
                         if viewModel.shouldLoadMoreData(currentItem: user) {
                             viewModel.fetchUsers()
@@ -20,7 +20,7 @@ struct UserListView: View {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))]) {
                         ForEach(viewModel.users) { user in
-                            UserCell(user: user)
+                            UserCell(viewModel: viewModel, user: user)
                             .onAppear {
                                 if viewModel.shouldLoadMoreData(currentItem: user) {
                                     viewModel.fetchUsers()
