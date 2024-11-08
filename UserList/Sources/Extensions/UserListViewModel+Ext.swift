@@ -8,6 +8,36 @@
 import Foundation
 
 extension UserListViewModel {
+    
+    static var previewViewModel: UserListViewModel {
+        let mockRepository = UserListRepository()
+        let viewModel = UserListViewModel(repository: mockRepository)
+        
+        // Simulez la récupération des utilisateurs pour la preview
+        Task {
+            await viewModel.fetchUsers()
+        }
+        
+        return viewModel
+    }
+    
+    static let userListResponsePreview = UserListResponse(
+           results: [
+               UserListResponse.User(
+                   name: UserListResponse.User.Name(title: "Mr", first: "John", last: "Doe"),
+                   dob: UserListResponse.User.Dob(date: "1990-01-01", age: 31),
+                   picture: UserListResponse.User.Picture(
+                       large: "guts",
+                       medium: "guts",
+                       thumbnail: "guts"
+                   )
+               )
+           ]
+       )
+        
+    static let userPreview = User(user: userListResponsePreview.results.first!)
+    
+
     var navigationTitle : String {
         isFrench ? "Utilisateurs" : "Users"
     }
@@ -53,7 +83,7 @@ extension UserListViewModel {
         default : return user.name.title
         }
     }
-    
+    //
     func bornOnString(for user: User) -> String {
         !isFrench ? "born on :" : getCivility(for: user) == "Monsieur" ? "né le :" : "née le :"
     }

@@ -12,6 +12,11 @@ struct FirstAndLastNameText: View {
     var body: some View {
         Text("\(user.name.first) \(user.name.last)")
             .font(.headline)
+            .foregroundStyle(.black)
             .multilineTextAlignment(.center)
     }
+}
+
+#Preview {
+    FirstAndLastNameText(user: UserListViewModel.userPreview)
 }

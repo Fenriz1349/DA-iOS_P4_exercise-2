@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ErrorLabel: View {
+    let message = "Erreur"
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("⚠ \(message)")
+            .background(.red)
     }
 }
 

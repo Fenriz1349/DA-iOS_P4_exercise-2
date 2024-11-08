@@ -23,16 +23,25 @@ struct AsyncUserImage: View {
         }
     
     var body: some View {
-        AsyncImage(url: URL(string: imageUrl)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size.rawValue, height: size.rawValue)
-                .clipShape(Circle())
-        } placeholder: {
-            ProgressView()
-                .frame(width: size.rawValue, height: size.rawValue)
-                .clipShape(Circle())
+            // Vérifier si l'image provient des assets (nom de l'image local)
+            if let _ = UIImage(named: imageUrl) {
+                Image(imageUrl)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: size.rawValue, height: size.rawValue)
+                    .clipShape(Circle())
+            } else {
+                AsyncImage(url: URL(string: imageUrl)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size.rawValue, height: size.rawValue)
+                        .clipShape(Circle())
+                } placeholder: {
+                    ProgressView()
+                        .frame(width: size.rawValue, height: size.rawValue)
+                        .clipShape(Circle())
+                }
+            }
         }
-    }
 }

@@ -23,19 +23,16 @@ final class UserListViewModel: ObservableObject {
     }
     
     // fonction qui va géré l'async pour peupler la userList dans la view
-    func fetchUsers() {
+    @MainActor
+    func fetchUsers() async {
         isLoading = true
-        Task {
-            do {
-                let users = try await repository.fetchUsers(quantity: 20)
-                // Le DispatchQueue force les modification des published var sur le main thread
-                DispatchQueue.main.async {
-                                self.users.append(contentsOf: users)
-                                self.isLoading = false
-                            }
-            } catch {
-                print("Error fetching users: \(error.localizedDescription)")
-            }
+        do {
+            let users = try await repository.fetchUsers(quantity: 20)
+            self.users.append(contentsOf: users)
+            self.isLoading = false
+        } catch {
+            // mettre une alerte plutot qu'un print
+            print("Error fetching users: \(error.localizedDescription)")
         }
     }
     
@@ -45,8 +42,8 @@ final class UserListViewModel: ObservableObject {
         return !isLoading && item.id == lastItem.id
     }
 
-    func reloadUsers() {
+    func reloadUsers() async {
         users.removeAll()
-        fetchUsers()
+        await fetchUsers()
     }
 }

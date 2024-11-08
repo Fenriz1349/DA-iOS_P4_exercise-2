@@ -50,6 +50,130 @@ final class UserListRepositoryTests: XCTestCase {
             XCTAssertTrue(error is DecodingError)
         }
     }
+    
+    func testShouldLoadMoreData_returnFalse() async throws {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let quantity = 2
+        let sut = UserListViewModel(repository: repository)
+        sut.users = try await repository.fetchUsers(quantity: quantity)
+        // When
+        let isNotLastItem = sut.shouldLoadMoreData(currentItem: sut.users.first!)
+        // Then
+        XCTAssertEqual(isNotLastItem, false)
+    }
+    
+    func testShouldLoadMoreData_returnTrue() async throws {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let quantity = 2
+        let sut = UserListViewModel(repository: repository)
+        sut.users = try await repository.fetchUsers(quantity: quantity)
+        // When
+        let isLastItem = sut.shouldLoadMoreData(currentItem: sut.users.last!)
+        // Then
+        XCTAssertEqual(isLastItem, true)
+    }
+    
+    func testShouldLoadMoreData_emptyUserList_returnsFalse() async throws {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let users = try await repository.fetchUsers(quantity: 2)
+        // When - leave sut.users empty
+        let result = sut.shouldLoadMoreData(currentItem: users.first!)
+        // Then
+        XCTAssertFalse(result, "Expected shouldLoadMoreData to return false when users list is empty")
+    }
+    
+    func testReloadUsers() async {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+
+        // When: appeler `reloadUsers`
+        await sut.reloadUsers()
+        // Then: vérifier que `users` a bien été vidé puis rechargé
+        XCTAssertEqual(sut.users.count, 2, "Expected `users` to be reloaded with 2 new users")
+        XCTAssertEqual(sut.users.first?.name.first, "John", "Expected first user to be `John` after reload")
+        
+        // Vérifier que `isLoading` est correctement géré
+        XCTAssertFalse(sut.isLoading, "Expected `isLoading` to be false after reload completes")
+    }
+    
+    func testBornOnString_isNotFrench() async throws {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let quantity = 2
+        let sut = UserListViewModel(repository: repository)
+        sut.users = try await repository.fetchUsers(quantity: quantity)
+        // When
+        sut.isFrench = false
+        let bornOnReturnString = sut.bornOnString(for: sut.users.first!)
+        // Then
+        XCTAssertEqual(bornOnReturnString,"born on :")
+    }
+    
+    func testBornOnString_isFrenchAndMonsieur() async throws {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let quantity = 2
+        let sut = UserListViewModel(repository: repository)
+        sut.users = try await repository.fetchUsers(quantity: quantity)
+        // When
+        sut.isFrench = true
+        let bornOnReturnString = sut.bornOnString(for: sut.users.first!)
+        // Then
+        XCTAssertEqual(bornOnReturnString,"né le :")
+    }
+    
+    func testBornOnString_isFrenchAndMadame() async throws {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        sut.users = try await repository.fetchUsers(quantity: 2)
+        // When
+        sut.isFrench = true
+        let bornOnReturnString = sut.bornOnString(for: sut.users.last!)
+        // Then
+        XCTAssertEqual(bornOnReturnString,"née le :")
+    }
+    
+    func testGetFrenchDate_isNotValid(){
+        // Given
+        let dob = User.Dob(date: "wrong", age: 10)
+        // When
+        let dobInFrench = dob.getFrenchDate()
+        // Then
+        XCTAssertEqual(dobInFrench,"wrong")
+    }
+    
+    func testGetFrenchDate_isValid(){
+        // Given
+        let dob = User.Dob(date: "1990-12-12T21:31:56.618Z", age: 10)
+        // When
+        let dobInFrench = dob.getFrenchDate()
+        // Then
+        XCTAssertEqual(dobInFrench,"12 décembre 1990")
+    }
+    
+    func testGetUSDate_isNotValid(){
+        // Given
+        let dob = User.Dob(date: "wrong", age: 10)
+        // When
+        let dobInFrench = dob.getUSDate()
+        // Then
+        XCTAssertEqual(dobInFrench,"wrong")
+    }
+    
+    func testGetUSDate_isValid(){
+        // Given
+        let dob = User.Dob(date: "1990-12-12T21:31:56.618Z", age: 10)
+        // When
+        let dobInFrench = dob.getUSDate()
+        // Then
+        XCTAssertEqual(dobInFrench,"December 12 1990")
+    }
 }
 
 private extension UserListRepositoryTests {

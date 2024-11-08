@@ -1,6 +1,6 @@
 import Foundation
 
-struct User: Identifiable {
+struct User: Identifiable, Codable {
     var id = UUID()
     let name: Name
     let dob: Dob

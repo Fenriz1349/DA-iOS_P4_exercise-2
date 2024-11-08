@@ -21,3 +21,7 @@ struct NameAndDobRowText: View {
         }
     }
 }
+
+#Preview {
+    NameAndDobRowText(viewModel: UserListViewModel.previewViewModel, user: UserListViewModel.userPreview)
+}

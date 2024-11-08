@@ -10,7 +10,6 @@
 		2F015BA82ACC938F009A098C /* UserListRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F015BA72ACC938F009A098C /* UserListRepositoryTests.swift */; };
 		2F6F65332ACD69290011B439 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 2F6F65322ACD69290011B439 /* Readme.md */; };
 		2F804AE22ACC976300A46A03 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F804AE12ACC976300A46A03 /* UserDetailView.swift */; };
-		2FEF0C6F2ACB416C004DB87C /* UserListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEF0C6E2ACB416C004DB87C /* UserListResponse.swift */; };
 		2FEF0C712ACB45E3004DB87C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEF0C702ACB45E3004DB87C /* User.swift */; };
 		2FF9D91B2ACB3CE600F3A6C5 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF9D91A2ACB3CE600F3A6C5 /* URLRequest.swift */; };
 		2FF9D91D2ACB3D8800F3A6C5 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF9D91C2ACB3D8800F3A6C5 /* HTTPMethod.swift */; };
@@ -18,6 +17,8 @@
 		2FFB64282AC6D255007F2F80 /* UserListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB64272AC6D255007F2F80 /* UserListApp.swift */; };
 		2FFB642A2AC6D255007F2F80 /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB64292AC6D255007F2F80 /* UserListView.swift */; };
 		2FFB642C2AC6D256007F2F80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FFB642B2AC6D256007F2F80 /* Assets.xcassets */; };
+		685184852CDE22D40089BEC8 /* ErrorLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685184842CDE22D40089BEC8 /* ErrorLabel.swift */; };
+		685184872CDE3B0E0089BEC8 /* UserListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685184862CDE3B0E0089BEC8 /* UserListResponse.swift */; };
 		685801E22CCA3F1A00B3190C /* UserListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685801E12CCA3F1A00B3190C /* UserListViewModel.swift */; };
 		685801E42CCA631600B3190C /* UserRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685801E32CCA631600B3190C /* UserRow.swift */; };
 		685801E62CCA638600B3190C /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685801E52CCA638600B3190C /* UserCell.swift */; };
@@ -46,7 +47,6 @@
 		2F6F65322ACD69290011B439 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 		2F804AE12ACC976300A46A03 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		2FB4823B2ACC98DD0016CBA7 /* UserList.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserList.xctestplan; sourceTree = "<group>"; };
-		2FEF0C6E2ACB416C004DB87C /* UserListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListResponse.swift; sourceTree = "<group>"; };
 		2FEF0C702ACB45E3004DB87C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2FF9D91A2ACB3CE600F3A6C5 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		2FF9D91C2ACB3D8800F3A6C5 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
@@ -56,6 +56,8 @@
 		2FFB64292AC6D255007F2F80 /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
 		2FFB642B2AC6D256007F2F80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FFB64342AC6D256007F2F80 /* UserListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UserListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		685184842CDE22D40089BEC8 /* ErrorLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLabel.swift; sourceTree = "<group>"; };
+		685184862CDE3B0E0089BEC8 /* UserListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListResponse.swift; sourceTree = "<group>"; };
 		685801E12CCA3F1A00B3190C /* UserListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewModel.swift; sourceTree = "<group>"; };
 		685801E32CCA631600B3190C /* UserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRow.swift; sourceTree = "<group>"; };
 		685801E52CCA638600B3190C /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 			children = (
 				2FEF0C702ACB45E3004DB87C /* User.swift */,
 				685801F02CCA6B3A00B3190C /* ImageSize.swift */,
+				685184862CDE3B0E0089BEC8 /* UserListResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 				685801EE2CCA68F600B3190C /* AsyncUserImage.swift */,
 				6877935F2CCA73CB00C97E39 /* FirstAndLastNameText.swift */,
 				685801E72CCA649000B3190C /* CustomNavigationBarModifier.swift */,
+				685184842CDE22D40089BEC8 /* ErrorLabel.swift */,
 			);
 			path = ExtractedViews;
 			sourceTree = "<group>";
@@ -192,7 +196,6 @@
 			children = (
 				2FF9D91E2ACB3DD400F3A6C5 /* UserListRepository.swift */,
 				685801E12CCA3F1A00B3190C /* UserListViewModel.swift */,
-				2FEF0C6E2ACB416C004DB87C /* UserListResponse.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -252,7 +255,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					2FFB64232AC6D255007F2F80 = {
 						CreatedOnToolsVersion = 14.2;
@@ -313,7 +316,6 @@
 				2FFB642A2AC6D255007F2F80 /* UserListView.swift in Sources */,
 				685801E42CCA631600B3190C /* UserRow.swift in Sources */,
 				687793642CCB7EA800C97E39 /* NameAndDobDetailViewText.swift in Sources */,
-				2FEF0C6F2ACB416C004DB87C /* UserListResponse.swift in Sources */,
 				685801E22CCA3F1A00B3190C /* UserListViewModel.swift in Sources */,
 				2F804AE22ACC976300A46A03 /* UserDetailView.swift in Sources */,
 				685801F12CCA6B3A00B3190C /* ImageSize.swift in Sources */,
@@ -321,6 +323,8 @@
 				2FF9D91F2ACB3DD400F3A6C5 /* UserListRepository.swift in Sources */,
 				2FFB64282AC6D255007F2F80 /* UserListApp.swift in Sources */,
 				685801EF2CCA68F600B3190C /* AsyncUserImage.swift in Sources */,
+				685184852CDE22D40089BEC8 /* ErrorLabel.swift in Sources */,
+				685184872CDE3B0E0089BEC8 /* UserListResponse.swift in Sources */,
 				685801E62CCA638600B3190C /* UserCell.swift in Sources */,
 				2FEF0C712ACB45E3004DB87C /* User.swift in Sources */,
 				685801EB2CCA65BD00B3190C /* View+Ext.swift in Sources */,

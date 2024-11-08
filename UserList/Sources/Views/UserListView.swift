@@ -11,7 +11,9 @@ struct UserListView: View {
                     UserRow(viewModel: viewModel, user: user)
                     .onAppear {
                         if viewModel.shouldLoadMoreData(currentItem: user) {
-                            viewModel.fetchUsers()
+                            Task {
+                               await viewModel.fetchUsers()
+                            }
                         }
                     }
                 }
@@ -23,7 +25,9 @@ struct UserListView: View {
                             UserCell(viewModel: viewModel, user: user)
                             .onAppear {
                                 if viewModel.shouldLoadMoreData(currentItem: user) {
-                                    viewModel.fetchUsers()
+                                    Task {
+                                       await viewModel.fetchUsers()
+                                    }
                                 }
                             }
                         }
@@ -33,7 +37,9 @@ struct UserListView: View {
             }
         }
         .onAppear {
-            viewModel.fetchUsers()
+            Task {
+               await viewModel.fetchUsers()
+            }
         }
     }
 }

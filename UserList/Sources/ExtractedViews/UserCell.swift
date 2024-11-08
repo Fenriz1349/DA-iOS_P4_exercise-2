@@ -21,3 +21,7 @@ struct UserCell: View {
         }
     }
 }
+
+#Preview {
+    UserCell(viewModel: UserListViewModel.previewViewModel, user: UserListViewModel.userPreview)
+}

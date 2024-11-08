@@ -21,3 +21,7 @@ struct UserRow: View {
         }
     }
 }
+
+#Preview {
+    UserRow(viewModel: UserListViewModel.previewViewModel, user: UserListViewModel.userPreview)
+}

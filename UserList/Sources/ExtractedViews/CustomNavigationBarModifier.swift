@@ -40,7 +40,9 @@ struct CustomNavigationBarModifier: ViewModifier {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        viewModel.reloadUsers()
+                        Task {
+                            await viewModel.reloadUsers()
+                        }
                     }) {
                         Image(systemName: "arrow.clockwise")
                             .imageScale(.large)
