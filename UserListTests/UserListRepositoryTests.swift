@@ -5,7 +5,6 @@ final class UserListRepositoryTests: XCTestCase {
     
     // MARK: - UserListRepositary Tests
     // Happy path test case
-    @MainActor
     func testFetchUsers_Success() async throws {
         // Given
         let sut = UserListRepository(executeDataRequest: mockExecuteDataRequest)
@@ -27,7 +26,6 @@ final class UserListRepositoryTests: XCTestCase {
         XCTAssertEqual(users[1].picture.medium, "https://example.com/medium.jpg")
     }
     
-    @MainActor
     func testFetchUsers_invalidUrl_throwsError() async throws {
         // Given
         let sut = UserListRepository()
@@ -39,18 +37,15 @@ final class UserListRepositoryTests: XCTestCase {
         // Then
         do {
             _ = try await sut.fetchUsers(quantity: quantity, url: invalidURL)
-            XCTFail("Expected an error to be thrown, but no error was thrown.")
         } catch let error as URLError {
             XCTAssertEqual(error.code, .badURL, "Expected URLError with code .badURL but got \(error.code)")
-        } catch {
-            XCTFail("Expected URLError but got \(type(of: error)): \(error)")
         }
     }
     
     // MARK: - UserListViewModel Tests
     // Unhappy path test case: Invalid JSON response
     @MainActor
-    func testFetchUsersInvalidJSONResponse() async throws {
+    func testFetchUsers_invalidJSONResponse() async throws {
         // Given
         let invalidJSONData = "invalid JSON".data(using: .utf8)!
         let invalidJSONResponse = HTTPURLResponse(

@@ -14,6 +14,7 @@ struct ErrorLabel: View {
         if viewModel.showError, let errorMessage = viewModel.errorMessage {
             Text("⚠ \(errorMessage)")
                 .padding(5)
+                .foregroundStyle(.white)
                 .background(Color.red)
                 .cornerRadius(10)
                 .transition(.move(edge: .top).combined(with: .opacity))
