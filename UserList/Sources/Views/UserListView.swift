@@ -23,13 +23,13 @@ struct UserListView: View {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))]) {
                         ForEach(viewModel.users) { user in
                             UserCell(viewModel: viewModel, user: user)
-                            .onAppear {
-                                if viewModel.shouldLoadMoreData(currentItem: user) {
-                                    Task {
-                                       await viewModel.fetchUsers()
+                                .onAppear {
+                                    if viewModel.shouldLoadMoreData(currentItem: user) {
+                                        Task {
+                                            await viewModel.fetchUsers()
+                                        }
                                     }
                                 }
-                            }
                         }
                     }
                 }

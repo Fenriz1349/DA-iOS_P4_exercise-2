@@ -16,6 +16,8 @@ final class UserListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isGridView = false
     @Published var isFrench = false
+    @Published var showError = false
+    @Published var errorMessage : String?
     
     // on ne peut init que le repository car les URLRequest sont async et donc non géré dans une init
     init(repository: UserListRepository) {
@@ -31,9 +33,15 @@ final class UserListViewModel: ObservableObject {
             self.users.append(contentsOf: users)
             self.isLoading = false
         } catch {
-            // mettre une alerte plutot qu'un print
-            print("Error fetching users: \(error.localizedDescription)")
+            showErrorMessage("Error fetching users: \(error.localizedDescription)")
         }
+    }
+    
+    // fonction
+    @MainActor
+    func showErrorMessage(_ message: String) {
+        errorMessage = message
+        showError = true        
     }
     
     // fonction pour regarder si on peut continuer à charger des nouveaux utilisateurs

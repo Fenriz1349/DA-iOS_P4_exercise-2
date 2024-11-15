@@ -39,15 +39,41 @@ struct CustomNavigationBarModifier: ViewModifier {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        Task {
-                            await viewModel.reloadUsers()
+                    ZStack(alignment: .topTrailing) {
+                        Button(action: {
+                            Task {
+                                await viewModel.reloadUsers()
+                            }
+                        }) {
+                            Image(systemName: "arrow.clockwise")
+                                .imageScale(.large)
                         }
-                    }) {
-                        Image(systemName: "arrow.clockwise")
-                            .imageScale(.large)
+                        
+                        if viewModel.showError {
+                            ErrorLabel(viewModel: viewModel)
+                                .padding(.top, 70)
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                        }
                     }
                 }
             }
+    }
+}
+
+struct CustomNavigationBarModifier_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            Text("User List")
+                .modifier(CustomNavigationBarModifier(viewModel: previewViewModel))
+        }
+    }
+
+    static var previewViewModel: UserListViewModel {
+        let viewModel = UserListViewModel(repository: UserListRepository())
+        viewModel.isFrench = true
+        viewModel.isGridView = true
+        viewModel.showError = true
+        viewModel.errorMessage = "Ceci est un Test"
+        return viewModel
     }
 }

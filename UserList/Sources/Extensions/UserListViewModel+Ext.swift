@@ -13,7 +13,6 @@ extension UserListViewModel {
         let mockRepository = UserListRepository()
         let viewModel = UserListViewModel(repository: mockRepository)
         
-        // Simulez la récupération des utilisateurs pour la preview
         Task {
             await viewModel.fetchUsers()
         }
@@ -25,7 +24,7 @@ extension UserListViewModel {
            results: [
                UserListResponse.User(
                    name: UserListResponse.User.Name(title: "Mr", first: "John", last: "Doe"),
-                   dob: UserListResponse.User.Dob(date: "1990-01-01", age: 31),
+                   dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
                    picture: UserListResponse.User.Picture(
                        large: "guts",
                        medium: "guts",
@@ -83,7 +82,7 @@ extension UserListViewModel {
         default : return user.name.title
         }
     }
-    //
+    // 
     func bornOnString(for user: User) -> String {
         !isFrench ? "born on :" : getCivility(for: user) == "Monsieur" ? "né le :" : "née le :"
     }

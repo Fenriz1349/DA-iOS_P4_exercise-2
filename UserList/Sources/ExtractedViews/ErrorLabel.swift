@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct ErrorLabel: View {
-    let message = "Erreur"
+    @ObservedObject var viewModel: UserListViewModel
+    
     var body: some View {
-        Text("⚠ \(message)")
-            .background(.red)
+        if viewModel.showError, let errorMessage = viewModel.errorMessage {
+            Text("⚠ \(errorMessage)")
+                .padding(5)
+                .background(Color.red)
+                .cornerRadius(10)
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .task {
+                    // Affiche le label pendant 5 secondes puis réinstalle la variable à false
+                    try? await Task.sleep(nanoseconds: 5 * 1_000_000_000)
+                    viewModel.showError = false
+                    viewModel.errorMessage = nil
+                }
+        }
     }
 }
 
 #Preview {
-    ErrorLabel()
+    ErrorLabel(viewModel: UserListViewModel.previewViewModel)
 }

@@ -2,14 +2,17 @@ import XCTest
 @testable import UserList
 
 final class UserListRepositoryTests: XCTestCase {
+    
+    // MARK: - UserListRepositary Tests
     // Happy path test case
-    func testFetchUsersSuccess() async throws {
+    @MainActor
+    func testFetchUsers_Success() async throws {
         // Given
-        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListRepository(executeDataRequest: mockExecuteDataRequest)
         let quantity = 2
         
         // When
-        let users = try await repository.fetchUsers(quantity: quantity)
+        let users = try await sut.fetchUsers(quantity: quantity)
         
         // Then
         XCTAssertEqual(users.count, quantity)
@@ -24,7 +27,29 @@ final class UserListRepositoryTests: XCTestCase {
         XCTAssertEqual(users[1].picture.medium, "https://example.com/medium.jpg")
     }
     
+    @MainActor
+    func testFetchUsers_invalidUrl_throwsError() async throws {
+        // Given
+        let sut = UserListRepository()
+        let quantity = 2
+        
+        // When
+        let invalidURL = ""
+        
+        // Then
+        do {
+            _ = try await sut.fetchUsers(quantity: quantity, url: invalidURL)
+            XCTFail("Expected an error to be thrown, but no error was thrown.")
+        } catch let error as URLError {
+            XCTAssertEqual(error.code, .badURL, "Expected URLError with code .badURL but got \(error.code)")
+        } catch {
+            XCTFail("Expected URLError but got \(type(of: error)): \(error)")
+        }
+    }
+    
+    // MARK: - UserListViewModel Tests
     // Unhappy path test case: Invalid JSON response
+    @MainActor
     func testFetchUsersInvalidJSONResponse() async throws {
         // Given
         let invalidJSONData = "invalid JSON".data(using: .utf8)!
@@ -39,18 +64,47 @@ final class UserListRepositoryTests: XCTestCase {
             return (invalidJSONData, invalidJSONResponse)
         }
         
-        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListRepository(executeDataRequest: mockExecuteDataRequest)
         
         // When
         do {
-            _ = try await repository.fetchUsers(quantity: 2)
+            _ = try await sut.fetchUsers(quantity: 2)
             XCTFail("Response should fail")
         } catch {
             // Then
             XCTAssertTrue(error is DecodingError)
         }
     }
+    @MainActor
+    func testFetchUsers_catchErrorShowsErrorMessage() async {
+        // Given
+        let errorMock: (URLRequest) async throws -> (Data, URLResponse) = { _ in
+                    throw URLError(.cannotFindHost) // Simule une erreur réseau
+                }
+        let repository = UserListRepository(executeDataRequest: errorMock)
+        let sut = UserListViewModel(repository: repository)
+        
+        // When
+        await sut.fetchUsers()
+        
+        // Then
+        XCTAssertTrue(sut.showError, "Expected showError to be true when an error occurs in fetchUsers.")
+        XCTAssertEqual(sut.errorMessage, "Error fetching users: The operation couldn’t be completed. (NSURLErrorDomain error -1003.)")
+    }
     
+    @MainActor
+    func testShowErrorMessage() {
+        // Given
+        let sut = UserListViewModel(repository: UserListRepository())
+        let testErrorMessage = "An error occurred"
+        
+        // When
+        sut.showErrorMessage(testErrorMessage)
+        
+        // Then
+        XCTAssertEqual(sut.errorMessage, testErrorMessage, "Expected errorMessage to be set to the test message.")
+        XCTAssertTrue(sut.showError, "Expected showError to be true after calling showErrorMessage.")
+    }
     func testShouldLoadMoreData_returnFalse() async throws {
         // Given
         let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
@@ -173,6 +227,366 @@ final class UserListRepositoryTests: XCTestCase {
         let dobInFrench = dob.getUSDate()
         // Then
         XCTAssertEqual(dobInFrench,"December 12 1990")
+    }
+    
+    func testNavigationTitle() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        
+        // When
+        sut.isFrench = true
+        
+        // Then
+        XCTAssertEqual(sut.navigationTitle, "Utilisateurs")
+        
+        // When
+        sut.isFrench = false
+        
+        // Then
+        XCTAssertEqual(sut.navigationTitle, "Users")
+    }
+    
+    func testDateOfBirthString() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "Mr", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        
+        // Then
+        XCTAssertEqual(sut.dateOfBirthString(for: sampleUser),"1 janvier 1990")
+        
+        // When
+        sut.isFrench = false
+        
+        // Then
+        XCTAssertEqual(sut.dateOfBirthString(for: sampleUser),"January 1 1990")
+    }
+    
+    func testPreviewViewModel() async throws {
+        // Given
+        let viewModel = UserListViewModel.previewViewModel
+        
+        // Then
+        XCTAssertNotNil(viewModel)
+        
+        // Given
+        let userListResponse = UserListViewModel.userListResponsePreview
+        
+        // Then
+        XCTAssertNotNil(userListResponse)
+        
+        // Given
+        let user = UserListViewModel.userPreview
+        
+        // Then
+        XCTAssertNotNil(user)
+    }
+    
+    func testGetCivility_withTitleM() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "m", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Monsieur")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mister")
+    }
+    
+    func testGetCivility_withTitleMonsieur() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "monsieur", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Monsieur")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mister")
+    }
+
+    func testGetCivility_withTitleMr() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "mr", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Monsieur")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mister")
+    }
+    
+    func testGetCivility_withTitleMister() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "mister", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Monsieur")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mister")
+    }
+
+    func testGetCivility_withTitleMs() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "ms", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Madame")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mrs")
+    }
+
+    func testGetCivility_withTitleMrs() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "mrs", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Madame")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mrs")
+    }
+    
+    func testGetCivility_withTitleMadame() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "madame", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Madame")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mrs")
+    }
+
+    func testGetCivility_withTitleMiss() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "miss", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mademoiselle")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Miss")
+    }
+
+    func testGetCivility_withTitleMademoiselle() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "mademoiselle", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mademoiselle")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Miss")
+    }
+
+    func testGetCivility_withTitleMlle() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "mlle", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Mademoiselle")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "Miss")
+    }
+
+    func testGetCivility_withUnknownTitle() {
+        // Given
+        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
+        let sut = UserListViewModel(repository: repository)
+        let sampleUserResponse = UserListResponse.User(
+            name: UserListResponse.User.Name(title: "unknown", first: "John", last: "Doe"),
+            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
+            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
+        )
+        let sampleUser = User(user: sampleUserResponse)
+        sut.users.append(sampleUser)
+        
+        // When
+        sut.isFrench = true
+        var civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "unknown")
+        
+        // When
+        sut.isFrench = false
+        civility = sut.getCivility(for: sut.users.first!)
+        
+        // Then
+        XCTAssertEqual(civility, "unknown")
     }
 }
 

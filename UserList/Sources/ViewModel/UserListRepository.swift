@@ -1,14 +1,16 @@
 import Foundation
 
 struct UserListRepository {
+    // static pour pouvoir utiliser cette constante sans créer d'instance
+    static let urlRandomUser = "https://randomuser.me/api/"
     private let executeDataRequest: (URLRequest) async throws -> (Data, URLResponse)
 
     init(executeDataRequest: @escaping (URLRequest) async throws -> (Data, URLResponse) = URLSession.shared.data(for:)) {
         self.executeDataRequest = executeDataRequest
     }
 
-    func fetchUsers(quantity: Int) async throws -> [User] {
-        guard let url = URL(string: "https://randomuser.me/api/") else {
+    func fetchUsers(quantity: Int, url: String = UserListRepository.urlRandomUser) async throws -> [User] {
+        guard let url = URL(string: url) else {
             throw URLError(.badURL)
         }
 
