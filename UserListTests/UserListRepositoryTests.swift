@@ -44,7 +44,7 @@ final class UserListRepositoryTests: XCTestCase {
     
     // MARK: - UserListViewModel Tests
     // Unhappy path test case: Invalid JSON response
-    @MainActor
+
     func testFetchUsers_invalidJSONResponse() async throws {
         // Given
         let invalidJSONData = "invalid JSON".data(using: .utf8)!
@@ -70,7 +70,7 @@ final class UserListRepositoryTests: XCTestCase {
             XCTAssertTrue(error is DecodingError)
         }
     }
-    @MainActor
+
     func testFetchUsers_catchErrorShowsErrorMessage() async {
         // Given
         let errorMock: (URLRequest) async throws -> (Data, URLResponse) = { _ in
@@ -87,7 +87,7 @@ final class UserListRepositoryTests: XCTestCase {
         XCTAssertEqual(sut.errorMessage, "Error fetching users: The operation couldn’t be completed. (NSURLErrorDomain error -1003.)")
     }
     
-    @MainActor
+    
     func testShowErrorMessage() {
         // Given
         let sut = UserListViewModel(repository: UserListRepository())
@@ -100,6 +100,7 @@ final class UserListRepositoryTests: XCTestCase {
         XCTAssertEqual(sut.errorMessage, testErrorMessage, "Expected errorMessage to be set to the test message.")
         XCTAssertTrue(sut.showError, "Expected showError to be true after calling showErrorMessage.")
     }
+    
     func testShouldLoadMoreData_returnFalse() async throws {
         // Given
         let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
@@ -151,39 +152,28 @@ final class UserListRepositoryTests: XCTestCase {
     }
     
     func testBornOnString_isNotFrench() async throws {
-        // Given
-        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
-        let quantity = 2
-        let sut = UserListViewModel(repository: repository)
-        sut.users = try await repository.fetchUsers(quantity: quantity)
-        // When
-        sut.isFrench = false
-        let bornOnReturnString = sut.bornOnString(for: sut.users.first!)
+        // Given / When
+        let frenchFalse = false
+        let bornOnReturnString = UserListViewModel.userPreview.bornOnString(frenchFalse)
+        
         // Then
         XCTAssertEqual(bornOnReturnString,"born on :")
     }
     
     func testBornOnString_isFrenchAndMonsieur() async throws {
-        // Given
-        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
-        let quantity = 2
-        let sut = UserListViewModel(repository: repository)
-        sut.users = try await repository.fetchUsers(quantity: quantity)
-        // When
-        sut.isFrench = true
-        let bornOnReturnString = sut.bornOnString(for: sut.users.first!)
+        // Given / When
+        let frenchTrue = true
+        let bornOnReturnString = UserListViewModel.userPreview.bornOnString(frenchTrue)
+        
         // Then
         XCTAssertEqual(bornOnReturnString,"né le :")
     }
     
     func testBornOnString_isFrenchAndMadame() async throws {
-        // Given
-        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
-        let sut = UserListViewModel(repository: repository)
-        sut.users = try await repository.fetchUsers(quantity: 2)
-        // When
-        sut.isFrench = true
-        let bornOnReturnString = sut.bornOnString(for: sut.users.last!)
+        // Given / When
+        let frenchTrue = true
+        let bornOnReturnString = UserListViewModel.userPreviewLady.bornOnString(frenchTrue)
+        
         // Then
         XCTAssertEqual(bornOnReturnString,"née le :")
     }
@@ -243,28 +233,13 @@ final class UserListRepositoryTests: XCTestCase {
     }
     
     func testDateOfBirthString() {
-        // Given
-        let repository = UserListRepository(executeDataRequest: mockExecuteDataRequest)
-        let sut = UserListViewModel(repository: repository)
-        let sampleUserResponse = UserListResponse.User(
-            name: UserListResponse.User.Name(title: "Mr", first: "John", last: "Doe"),
-            dob: UserListResponse.User.Dob(date: "1990-01-01T21:31:56.618Z", age: 31),
-            picture: UserListResponse.User.Picture(large: "", medium: "", thumbnail: "")
-        )
-        let sampleUser = User(user: sampleUserResponse)
-        sut.users.append(sampleUser)
-        
-        // When
-        sut.isFrench = true
+        // Given / When
+        let frenchTrue = true
+        let frenchFalse = false
         
         // Then
-        XCTAssertEqual(sut.dateOfBirthString(for: sampleUser),"1 janvier 1990")
-        
-        // When
-        sut.isFrench = false
-        
-        // Then
-        XCTAssertEqual(sut.dateOfBirthString(for: sampleUser),"January 1 1990")
+        XCTAssertEqual(UserListViewModel.userPreview.dateOfBirthString(frenchTrue),"1 janvier 1990")
+        XCTAssertEqual(UserListViewModel.userPreview.dateOfBirthString(frenchFalse),"January 1 1990")
     }
     
     func testPreviewViewModel() async throws {
@@ -301,14 +276,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Monsieur")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mister")
@@ -328,14 +303,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Monsieur")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mister")
@@ -355,14 +330,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Monsieur")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mister")
@@ -382,14 +357,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Monsieur")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mister")
@@ -409,14 +384,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Madame")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mrs")
@@ -436,14 +411,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Madame")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mrs")
@@ -463,14 +438,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Madame")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mrs")
@@ -490,14 +465,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mademoiselle")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Miss")
@@ -517,14 +492,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mademoiselle")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Miss")
@@ -544,14 +519,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Mademoiselle")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "Miss")
@@ -571,14 +546,14 @@ final class UserListRepositoryTests: XCTestCase {
         
         // When
         sut.isFrench = true
-        var civility = sut.getCivility(for: sut.users.first!)
+        var civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "unknown")
         
         // When
         sut.isFrench = false
-        civility = sut.getCivility(for: sut.users.first!)
+        civility = sampleUser.getCivility(sut.isFrench)
         
         // Then
         XCTAssertEqual(civility, "unknown")

@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct NameAndDobRowText: View {
-    @ObservedObject var viewModel : UserListViewModel
-    
     let user : User
+    let isFrench : Bool
     
     var body: some View {
         VStack(alignment: .leading) {
             Text("\(user.name.first) \(user.name.last)")
                 .font(.headline)
-            Text("\(viewModel.dateOfBirthString(for: user))")
+            Text("\(user.dateOfBirthString(isFrench))")
                 .font(.subheadline)
         }
     }
 }
 
 #Preview {
-    NameAndDobRowText(viewModel: UserListViewModel.previewViewModel, user: UserListViewModel.userPreview)
+    NameAndDobRowText(user: UserListViewModel.userPreview, isFrench: true)
 }

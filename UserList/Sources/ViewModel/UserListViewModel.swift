@@ -38,12 +38,15 @@ final class UserListViewModel: ObservableObject {
     }
     
     // fonction
-    @MainActor
     func showErrorMessage(_ message: String) {
         errorMessage = message
         showError = true        
     }
     
+    func hideErrorMessage() {
+        errorMessage = nil
+        showError = false
+    }
     // fonction pour regarder si on peut continuer à charger des nouveaux utilisateurs
     func shouldLoadMoreData(currentItem item: User) -> Bool {
         guard let lastItem = users.last else { return false }

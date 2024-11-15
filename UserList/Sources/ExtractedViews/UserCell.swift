@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct UserCell: View {
-    @ObservedObject var viewModel : UserListViewModel
-    
     let user : User
-    
+    let isFrench: Bool
     var body: some View {
-        NavigationLink(destination: UserDetailView(viewModel: viewModel , user: user)) {
+        NavigationLink(destination: UserDetailView(user: user, isFrench: isFrench)) {
             VStack {
                 AsyncUserImage(user: user, size: .medium)
                 FirstAndLastNameText(user: user)
@@ -23,5 +21,5 @@ struct UserCell: View {
 }
 
 #Preview {
-    UserCell(viewModel: UserListViewModel.previewViewModel, user: UserListViewModel.userPreview)
+    UserCell(user: UserListViewModel.userPreview, isFrench: true)
 }

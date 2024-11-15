@@ -30,6 +30,7 @@
 		687793602CCA73CB00C97E39 /* FirstAndLastNameText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6877935F2CCA73CB00C97E39 /* FirstAndLastNameText.swift */; };
 		687793642CCB7EA800C97E39 /* NameAndDobDetailViewText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687793632CCB7EA800C97E39 /* NameAndDobDetailViewText.swift */; };
 		687793672CCB954900C97E39 /* UserListViewModel+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687793662CCB954900C97E39 /* UserListViewModel+Ext.swift */; };
+		68B33C6B2CE75E0400954A81 /* User+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B33C6A2CE75E0400954A81 /* User+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		6877935F2CCA73CB00C97E39 /* FirstAndLastNameText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstAndLastNameText.swift; sourceTree = "<group>"; };
 		687793632CCB7EA800C97E39 /* NameAndDobDetailViewText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameAndDobDetailViewText.swift; sourceTree = "<group>"; };
 		687793662CCB954900C97E39 /* UserListViewModel+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserListViewModel+Ext.swift"; sourceTree = "<group>"; };
+		68B33C6A2CE75E0400954A81 /* User+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 			children = (
 				685801EA2CCA65BD00B3190C /* View+Ext.swift */,
 				687793662CCB954900C97E39 /* UserListViewModel+Ext.swift */,
+				68B33C6A2CE75E0400954A81 /* User+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				685801EF2CCA68F600B3190C /* AsyncUserImage.swift in Sources */,
 				685184852CDE22D40089BEC8 /* ErrorLabel.swift in Sources */,
 				685184872CDE3B0E0089BEC8 /* UserListResponse.swift in Sources */,
+				68B33C6B2CE75E0400954A81 /* User+Ext.swift in Sources */,
 				685801E62CCA638600B3190C /* UserCell.swift in Sources */,
 				2FEF0C712ACB45E3004DB87C /* User.swift in Sources */,
 				685801EB2CCA65BD00B3190C /* View+Ext.swift in Sources */,

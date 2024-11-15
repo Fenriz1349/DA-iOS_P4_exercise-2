@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct UserListApp: App {
+    @StateObject var viewModel = UserListViewModel(repository: UserListRepository())
+    
     var body: some Scene {
         WindowGroup {
-            UserListView()
+            UserListView(viewModel: viewModel)
         }
     }
 }

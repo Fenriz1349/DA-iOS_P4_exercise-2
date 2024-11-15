@@ -7,25 +7,22 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct NameAndDobDetailViewText: View {
-    @ObservedObject var viewModel : UserListViewModel
-    
     let user : User
+    let isFrench : Bool
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(viewModel.getCivility(for: user)) \(user.name.first) \(user.name.last)")
+            Text("\(user.getCivility(isFrench)) \(user.name.first) \(user.name.last)")
                 .font(.headline)
-            Text(viewModel.bornOnString(for: user))
+            Text(user.bornOnString(isFrench))
                 .font(.subheadline)
-            Text("\(viewModel.dateOfBirthString(for: user))")
+            Text("\(user.dateOfBirthString(isFrench))")
                 .font(.subheadline)
         }
     }
 }
 
 #Preview {
-    NameAndDobDetailViewText(viewModel: UserListViewModel.previewViewModel, user: UserListViewModel.userPreview)
+    NameAndDobDetailViewText(user: UserListViewModel.userPreview, isFrench: true)
 }
