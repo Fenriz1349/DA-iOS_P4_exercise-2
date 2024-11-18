@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+// Gère l'affichage de la Navbar
+// Elle contient un picker pour choisir entre français et anglais
+// Un Picker pour choisir le display entre Grid et List
+// Un bouton pour relaod les User
+// Le titre
 struct CustomNavigationBarModifier: ViewModifier {
     @ObservedObject var viewModel : UserListViewModel
     

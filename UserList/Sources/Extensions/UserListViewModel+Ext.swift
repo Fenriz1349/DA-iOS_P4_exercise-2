@@ -9,6 +9,7 @@ import Foundation
 
 extension UserListViewModel {
     
+    // ViewModel pour les preview
     static var previewViewModel: UserListViewModel {
         let mockRepository = UserListRepository()
         let viewModel = UserListViewModel(repository: mockRepository)
@@ -20,6 +21,7 @@ extension UserListViewModel {
         return viewModel
     }
     
+    // USerListResponse utilisé pour créer 2 User pour les previews
     static let userListResponsePreview = UserListResponse(
            results: [
                UserListResponse.User(
@@ -42,7 +44,7 @@ extension UserListViewModel {
                )
            ]
        )
-        
+    
     static let userPreview = User(user: userListResponsePreview.results.first!)
     static let userPreviewLady = User(user: userListResponsePreview.results.last!)
     

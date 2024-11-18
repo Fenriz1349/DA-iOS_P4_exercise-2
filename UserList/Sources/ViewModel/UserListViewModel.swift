@@ -33,12 +33,12 @@ final class UserListViewModel: ObservableObject {
             self.users.append(contentsOf: users)
             self.isLoading = false
         } catch {
-            showErrorMessage("Error fetching users: \(error.localizedDescription)")
+            setErrorMessage("Error fetching users: \(error.localizedDescription)")
         }
     }
     
-    // fonction
-    func showErrorMessage(_ message: String) {
+    // fonction pour configurer le message d'erreur et l'afficher
+    func setErrorMessage(_ message: String) {
         errorMessage = message
         showError = true        
     }
@@ -47,6 +47,7 @@ final class UserListViewModel: ObservableObject {
         errorMessage = nil
         showError = false
     }
+    
     // fonction pour regarder si on peut continuer à charger des nouveaux utilisateurs
     func shouldLoadMoreData(currentItem item: User) -> Bool {
         guard let lastItem = users.last else { return false }

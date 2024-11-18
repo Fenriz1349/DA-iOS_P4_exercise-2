@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Affichage d'un User en mode Grid
 struct UserCell: View {
     let user : User
     let isFrench: Bool

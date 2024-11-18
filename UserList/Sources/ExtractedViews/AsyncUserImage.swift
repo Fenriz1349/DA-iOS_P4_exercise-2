@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Permet d'afficher l'avatar d'un User au format choisi, soit en utilisant celle des assets, soit celle qui est récupéré sur Internet.
 struct AsyncUserImage: View {
     let user : User
     let size : ImageSize

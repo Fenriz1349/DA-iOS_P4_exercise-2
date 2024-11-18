@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Affiche un message sur fond rouge
 struct ErrorLabel: View {
     var message : String
     
@@ -20,5 +21,5 @@ struct ErrorLabel: View {
 }
 
 #Preview {
-    ErrorLabel(message: "ta mère la pute")
+    ErrorLabel(message: "Je suis un message d'erreur")
 }

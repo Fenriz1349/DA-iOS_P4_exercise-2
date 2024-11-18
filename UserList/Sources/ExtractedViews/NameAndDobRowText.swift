@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Affiche sur une ligne le prenom et le nom d'un User, sur une autre sa date de naissance
 struct NameAndDobRowText: View {
     let user : User
     let isFrench : Bool

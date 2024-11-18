@@ -8,11 +8,12 @@
 import Foundation
  
 extension User {
-    
+    // Permet de retourner la date de naissance d'un User au format français ou américain
     func dateOfBirthString(_ isFrench : Bool) -> String {
         isFrench ? self.dob.getFrenchDate() : self.dob.getUSDate()
     }
     
+    // Permet de retourner la civité suivant la langue choisie
     func getCivility(_ isFrench: Bool) -> String {
         enum frenchCivilities: String{
             case monsieur = "Monsieur"
@@ -50,6 +51,7 @@ extension User {
         default : return self.name.title
         }
     }
+    
     
     func bornOnString(_ isFrench : Bool) -> String {
         !isFrench ? "born on :" : self.getCivility(isFrench) == "Monsieur" ? "né le :" : "née le :"
