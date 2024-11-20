@@ -88,17 +88,32 @@ final class UserListRepositoryTests: XCTestCase {
     }
     
     
-    func testShowErrorMessage() {
+    func testSetErrorMessage() {
         // Given
         let sut = UserListViewModel(repository: UserListRepository())
         let testErrorMessage = "An error occurred"
         
         // When
-        sut.showErrorMessage(testErrorMessage)
+        sut.setErrorMessage(testErrorMessage)
         
         // Then
         XCTAssertEqual(sut.errorMessage, testErrorMessage, "Expected errorMessage to be set to the test message.")
         XCTAssertTrue(sut.showError, "Expected showError to be true after calling showErrorMessage.")
+    }
+    
+    func testHideErrorMessage() {
+        // Given
+        let sut = UserListViewModel(repository: UserListRepository())
+        sut.errorMessage = "This message should disapear"
+        sut.showError = true
+        
+        // When
+        sut.hideErrorMessage()
+        
+        // Then
+        XCTAssertEqual(sut.errorMessage, nil, "Expected errorMessage to be set to nil.")
+        XCTAssertFalse(sut.showError, "Expected showError to be false after calling hideErrorMessage.")
+
     }
     
     func testShouldLoadMoreData_returnFalse() async throws {
