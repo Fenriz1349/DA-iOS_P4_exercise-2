@@ -42,9 +42,6 @@ final class UserListRepositoryTests: XCTestCase {
         }
     }
     
-    // MARK: - UserListViewModel Tests
-    // Unhappy path test case: Invalid JSON response
-
     func testFetchUsers_invalidJSONResponse() async throws {
         // Given
         let invalidJSONData = "invalid JSON".data(using: .utf8)!
@@ -70,7 +67,9 @@ final class UserListRepositoryTests: XCTestCase {
             XCTAssertTrue(error is DecodingError)
         }
     }
-
+    
+    // MARK: - UserListViewModel Tests
+    // Unhappy path test case: Invalid JSON response
     func testFetchUsers_catchErrorShowsErrorMessage() async {
         // Given
         let errorMock: (URLRequest) async throws -> (Data, URLResponse) = { _ in
