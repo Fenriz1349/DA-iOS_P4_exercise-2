@@ -31,6 +31,7 @@
 		687793642CCB7EA800C97E39 /* NameAndDobDetailViewText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687793632CCB7EA800C97E39 /* NameAndDobDetailViewText.swift */; };
 		687793672CCB954900C97E39 /* UserListViewModel+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687793662CCB954900C97E39 /* UserListViewModel+Ext.swift */; };
 		68B33C6B2CE75E0400954A81 /* User+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B33C6A2CE75E0400954A81 /* User+Ext.swift */; };
+		68B33C702CF08C0500954A81 /* Dob+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B33C6F2CF08BFA00954A81 /* Dob+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		687793632CCB7EA800C97E39 /* NameAndDobDetailViewText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameAndDobDetailViewText.swift; sourceTree = "<group>"; };
 		687793662CCB954900C97E39 /* UserListViewModel+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserListViewModel+Ext.swift"; sourceTree = "<group>"; };
 		68B33C6A2CE75E0400954A81 /* User+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Ext.swift"; sourceTree = "<group>"; };
+		68B33C6F2CF08BFA00954A81 /* Dob+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dob+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 		685801E92CCA65AD00B3190C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				68B33C6F2CF08BFA00954A81 /* Dob+Ext.swift */,
 				685801EA2CCA65BD00B3190C /* View+Ext.swift */,
 				687793662CCB954900C97E39 /* UserListViewModel+Ext.swift */,
 				68B33C6A2CE75E0400954A81 /* User+Ext.swift */,
@@ -323,6 +326,7 @@
 				2F804AE22ACC976300A46A03 /* UserDetailView.swift in Sources */,
 				685801F12CCA6B3A00B3190C /* ImageSize.swift in Sources */,
 				687793602CCA73CB00C97E39 /* FirstAndLastNameText.swift in Sources */,
+				68B33C702CF08C0500954A81 /* Dob+Ext.swift in Sources */,
 				2FF9D91F2ACB3DD400F3A6C5 /* UserListRepository.swift in Sources */,
 				2FFB64282AC6D255007F2F80 /* UserListApp.swift in Sources */,
 				685801EF2CCA68F600B3190C /* AsyncUserImage.swift in Sources */,

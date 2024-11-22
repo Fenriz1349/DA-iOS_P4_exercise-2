@@ -2,7 +2,7 @@ import SwiftUI
 
 struct UserListView: View {
 
-    let viewModel : UserListViewModel
+    @StateObject var viewModel = UserListViewModel(repository: UserListRepository())
     
     var body: some View {
         ZStack {

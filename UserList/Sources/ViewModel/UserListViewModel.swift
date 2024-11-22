@@ -53,7 +53,8 @@ final class UserListViewModel: ObservableObject {
         guard let lastItem = users.last else { return false }
         return !isLoading && item.id == lastItem.id
     }
-
+    
+    @MainActor
     func reloadUsers() async {
         users.removeAll()
         await fetchUsers()
