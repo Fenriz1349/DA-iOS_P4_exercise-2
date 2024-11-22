@@ -27,7 +27,7 @@ struct CustomNavigationBarModifier: ViewModifier {
                             .clipShape(RoundedRectangle(cornerRadius: 5))
                         Text("🇺🇸")
                             .tag(false)
-                            .accessibilityLabel(Text("List view"))
+                            .accessibilityLabel(Text("English"))
                             .clipShape(RoundedRectangle(cornerRadius: 5))
                     }
                     .pickerStyle(SegmentedPickerStyle())
@@ -36,7 +36,7 @@ struct CustomNavigationBarModifier: ViewModifier {
                     Picker(selection: $viewModel.isGridView, label: Text("Display")) {
                         Image(systemName: "rectangle.grid.1x2.fill")
                             .tag(true)
-                            .accessibilityLabel(Text("English"))
+                            .accessibilityLabel(Text("Grid View"))
                         Image(systemName: "list.bullet")
                             .tag(false)
                             .accessibilityLabel(Text("List view"))
